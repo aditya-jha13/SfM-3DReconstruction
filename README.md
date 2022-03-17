@@ -1,11 +1,11 @@
 # SfM-3DReconstruction
 ## 3D reconstruction using Structure from Motion(SfM) algorithm.
 
-Report: [Link][https://docs.google.com/document/d/12FPLzRIO8AhcV78BXjLcLoiL17x3lf_6GzaUwWQ54Pc/edit?usp=sharing]
+Report: [Link](https://docs.google.com/document/d/12FPLzRIO8AhcV78BXjLcLoiL17x3lf_6GzaUwWQ54Pc/edit?usp=sharing)
 
 ## Requirments
 
-Build [OpenCV][https://gist.github.com/Mahedi-61/804a663b449e4cdb31b5fea96bb9d561] and [PCL][https://pcl.readthedocs.io/projects/tutorials/en/master/] libraries from source.
+Build [OpenCV](https://gist.github.com/Mahedi-61/804a663b449e4cdb31b5fea96bb9d561) and [PCL](https://pcl.readthedocs.io/projects/tutorials/en/master/) libraries from source.
 
 ## Installation
 
