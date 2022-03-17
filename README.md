@@ -29,9 +29,10 @@ The input images are present in `test images` folder. The images are taken from 
 
 The features are detected in each image using the `AKAZE Detector` and features are matched for each pair of image using `FLANN Based Matcher`.
 
-<img src="results/matched1.png" alt="1" width="200"/>
-
-<img src="results/matched7.png" alt="1" width="200"/>
+<p float="left">
+  <img src="results/matched1.png" alt="1" width="400"/>
+  <img src="results/matched7.png" alt="1" width="400"/>
+</p>
 
 ### Final Reconstruction & Comparison
 
