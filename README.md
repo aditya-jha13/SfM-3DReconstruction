@@ -41,10 +41,12 @@ Final Image of Reconstruction(pointclouds)
 
 Expected Reconstruction(3D triangular meshes)
 
-<img src="results/expected.png" alt="1" width="400"/>
+<img src="results/expectation.png" alt="1" width="400"/>
 
 The expected output is optimal as it has `bundle adjustment` integrated as well as the the point clouds are made denser by converting pointclouds to meshes.
+
 `TODO`: Integrate bundle adjustment and make the final reconstruction denser.
 
 ## About
 
+The first step in the SfM pipeline is `Feature Matching` where we find and match the features between each pair of images which is later udes to find the relative transformation between the images. In the second step, we `estimate motion` between the images and `triangulate` the matched points in 3D space. The major functions used in this step are `cv::findEssentialMat`, `cv::recoverPose` and `cv::triangulatePoints`.
