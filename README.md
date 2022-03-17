@@ -21,3 +21,30 @@ cmake .
 make
 ./mySfM
 ```
+## Demo
+
+The input images are present in `test images` folder. The images are taken from different viewpoints of a scene.
+
+### Feature Matching
+
+The features are detected in each image using the `AKAZE Detector` and features are matched for each pair of image using `FLANN Based Matcher`.
+
+<img src="results/matched1.png" alt="1" width="400"/>
+
+<img src="results/matched7.png" alt="1" width="400"/>
+
+### Final Reconstruction & Comparison
+
+Final Image of Reconstruction(pointclouds)
+
+<img src="results/reality.png" alt="1" width="400"/>
+
+Expected Reconstruction(3D triangular meshes)
+
+<img src="results/expected.png" alt="1" width="400"/>
+
+The expected output is optimal as it has `bundle adjustment` integrated as well as the the point clouds are made denser by converting pointclouds to meshes.
+`TODO`: Integrate bundle adjustment and make the final reconstruction denser.
+
+## About
+
