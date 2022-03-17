@@ -29,9 +29,9 @@ The input images are present in `test images` folder. The images are taken from 
 
 The features are detected in each image using the `AKAZE Detector` and features are matched for each pair of image using `FLANN Based Matcher`.
 
-<img src="results/matched1.png" alt="1" width="400"/>
+<img src="results/matched1.png" alt="1" width="200"/>
 
-<img src="results/matched7.png" alt="1" width="400"/>
+<img src="results/matched7.png" alt="1" width="200"/>
 
 ### Final Reconstruction & Comparison
 
@@ -49,4 +49,4 @@ The expected output is optimal as it has `bundle adjustment` integrated as well 
 
 ## About
 
-The first step in the SfM pipeline is `Feature Matching` where we find and match the features between each pair of images which is later udes to find the relative transformation between the images. In the second step, we `estimate motion` between the images and `triangulate` the matched points in 3D space. The major functions used in this step are `cv::findEssentialMat`, `cv::recoverPose` and `cv::triangulatePoints`.
+The first step in the SfM pipeline is `Feature Matching` where we find and match the features between each pair of images which is later used to find the relative transformation between the images. In the second step, we `estimate motion` between the images and `triangulate` the matched points in 3D space. The major functions used in this step are `cv::findEssentialMat`, `cv::recoverPose` and `cv::triangulatePoints`.
