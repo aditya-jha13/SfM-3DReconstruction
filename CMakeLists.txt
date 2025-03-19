@@ -6,25 +6,23 @@ add_compile_options(-std=c++11)
 
 find_package(OpenCV REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(GTSAM REQUIRED)
 include_directories(
     include
     ${OpenCV_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
-    ${GTSAM_INCLUDE_DIR}
 )
 
 enable_testing()
 
 # Find GTSAM components
-find_package(GTSAM REQUIRED) # Uses installed package
+# find_package(GTSAM REQUIRED) # Uses installed package
 
 # set(GTSAM_LIBRARIES gtsam)   # TODO: automatic search libs
 
-find_package(GTSAMCMakeTools)
-include(GtsamMakeConfigFile)
-include(GtsamBuildTypes)
-include(GtsamTesting)
+# find_package(GTSAMCMakeTools)
+# include(GtsamMakeConfigFile)
+# include(GtsamBuildTypes)
+# include(GtsamTesting)
 
 # for unittest scripts
 # set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH}" "${GTSAM_DIR}/../GTSAMCMakeTools")
@@ -51,5 +49,5 @@ add_definitions(${OpenCV_DEFINITIONS} ${GTSAM_DEFINITIONS})
 # target_link_libraries (featureMatch ${OpenCV_LIBRARIES})
 target_link_libraries (sfm  ${OpenCV_LIBRARIES} )#gtsam )
 target_link_libraries (sfm Eigen3::Eigen)
-# target_link_libraries (sfm Boost::chrono Boost::timer Boost::date_time Boost::filesystem Boost::serialization)
-# target_link_libraries (main ${OpenCV_LIBRARIES})
+target_link_libraries (sfm Boost::chrono Boost::timer Boost::date_time Boost::filesystem Boost::serialization)
+target_link_libraries (sfm ${OpenCV_LIBRARIES})

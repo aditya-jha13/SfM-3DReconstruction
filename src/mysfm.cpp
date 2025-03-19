@@ -15,7 +15,7 @@ const int DS_FACTOR = 10;
 const double FOCAL_LENGTH = 4308/DS_FACTOR ; 
 const int MIN_LANDMARK_SEEN = 3;
 
-const std::string IMAGE_PATH="/home/aditya/SfM/desk/";
+const std::string IMAGE_PATH="./images/";
 
 const std::vector<std::string> IMAGES = {
     "DSC02638.JPG",
@@ -88,58 +88,79 @@ int main(int argc, char **argv)
         size_t N=imgPoses.size();
         // std::cout<<N;
         // int cnt=0;
-        for( size_t i = 0; i<(N-1);i++){
+        for (size_t i = 0; i < (N - 1); i++) {
             ImgPose& imgPose_i = imgPoses[i];
-
-            for(size_t j = i+1; j<N; j++){
+        
+            for (size_t j = i + 1; j < N; j++) {
                 ImgPose& imgPose_j = imgPoses[j];
-
+        
                 std::vector<std::vector<cv::DMatch>> matches;
-                std::vector<cv::Point2f> src,dst;
+                std::vector<cv::Point2f> src, dst;
                 std::vector<uchar> mask;
                 std::vector<int> i_kp, j_kp;
-
-                matcher->knnMatch(imgPose_i.desc,imgPose_j.desc, matches,2);
-
+        
+                matcher->knnMatch(imgPose_i.desc, imgPose_j.desc, matches, 2);
                 std::vector<cv::DMatch> good_matches;
-
-                for(auto & match:matches){
-                    if(match[0].distance<0.7*match[1].distance){
-
+        
+                for (auto& match : matches) {
+                    if (match[0].distance < 0.7 * match[1].distance) {
                         src.push_back(imgPose_i.kp[match[0].queryIdx].pt);
                         dst.push_back(imgPose_j.kp[match[0].trainIdx].pt);
-
+        
                         i_kp.push_back(match[0].queryIdx);
                         j_kp.push_back(match[0].trainIdx);
                         good_matches.push_back(match[0]);
                     }
                 }
-                
+        
+                if (src.size() < 8) {
+                    std::cout << "Not enough matches. Skipping pair (" << i << ", " << j << ")" << std::endl;
+                    continue;
+                }
+        
                 cv::Mat img_match;
-                cv::drawMatches(imgPose_i.img,imgPose_i.kp,imgPose_j.img,imgPose_j.kp,good_matches,img_match,cv::Scalar::all(-1),cv::Scalar::all(-1),std::vector<char>(),cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
-            
+                cv::drawMatches(imgPose_i.img, imgPose_i.kp, imgPose_j.img, imgPose_j.kp, good_matches, img_match, 
+                                cv::Scalar::all(-1), cv::Scalar::all(-1), std::vector<char>(), 
+                                cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+        
                 cv::findFundamentalMat(src, dst, cv::FM_RANSAC, 3.0, 0.99, mask);
-                
+        
+                if (mask.empty()) {
+                    std::cout << "Fundamental matrix computation failed. Skipping..." << std::endl;
+                    continue;
+                }
+        
                 cv::Mat canvas = imgPose_i.img.clone();
                 canvas.push_back(imgPose_j.img.clone());
-
-                for(size_t k=0; k<mask.size();k++){
-                    if(mask[k]){
-                        imgPose_i.kp_match_idx(i_kp[k],j) = j_kp[k];
+        
+                int good_ = 0;
+                for (size_t k = 0; k < mask.size(); k++) {
+                    if (mask[k]) {
+                        imgPose_i.kp_match_idx(i_kp[k], j) = j_kp[k];
                         imgPose_j.kp_match_idx(j_kp[k], i) = i_kp[k];
-
-                        line(canvas, src[k],dst[k] + cv::Point2f(0,imgPose_i.img.rows),cv::Scalar(0,0,255),2);
+        
+                        line(canvas, src[k], dst[k] + cv::Point2f(0, imgPose_i.img.rows), cv::Scalar(0, 0, 255), 2);
+                        good_++;
                     }
                 }
-                int good_ = cv::sum(mask)[0];
-                assert(good_>=10);
-                std::cout<<"Feature Match"<< i <<" "<<j<< " =>" <<good_<<"/"<<matches.size()<<std::endl;
-                cv::resize(canvas,canvas,canvas.size()/2);
-                cv::imshow("img", canvas);
-                cv::waitKey(0);
-                
+        
+                if (good_ < 10) {
+                    std::cout << "Not enough inliers. Skipping..." << std::endl;
+                    continue;
+                }
+        
+                std::cout << "Feature Match " << i << " " << j << " => " << good_ << "/" << matches.size() << std::endl;
+        
+                cv::resize(canvas, canvas, canvas.size() / 2);
+        
+                if (!cv::imwrite("img.jpg", canvas)) {
+                    std::cerr << "Failed to save image!" << std::endl;
+                }
+        
+                cv::waitKey(1);  // Reduce blocking
             }
         }
+        
     
 
 
@@ -278,7 +299,7 @@ int main(int argc, char **argv)
 
                 cv::triangulatePoints(prev.P, curr.P, src,dst , points4D);
             }
-              dbgLine;
+            //   dbgLine;
             for (size_t j=0; j < kp_used.size(); j++) {
                 if (mask.at<uchar>(j)) {
                     size_t k = kp_used[j];
