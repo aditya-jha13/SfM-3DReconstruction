@@ -3,3 +3,5 @@ CMakeFiles/
 *.txt
 Makefile
 sfm
+*vscode/
+*.ply
